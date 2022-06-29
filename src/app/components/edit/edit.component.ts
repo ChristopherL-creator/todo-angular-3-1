@@ -2,7 +2,7 @@ import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Todo } from 'src/app/model/todo';
 import { DataService } from 'src/app/services/data.service';
-import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import { COMMA, ENTER, SPACE } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 
 @Component({
@@ -20,7 +20,7 @@ export class EditComponent implements OnInit {
 
   public id: string | null = '';
   addOnBlur = true;
-  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  readonly separatorKeysCodes = [ENTER, COMMA, SPACE] as const;
   tags: any[] = [];
 
   constructor(
@@ -68,17 +68,19 @@ export class EditComponent implements OnInit {
 
 
   add(event: MatChipInputEvent): void {
-    const value = (event.value || '').trim();
+    const value = (event.value || '').trim(); 
+      console.log(value);
+      
     if (value) {
-      this.tags.push({ name: value });
+      this.todo.tags.push(value);
     }
     event.chipInput!.clear();
   }
 
   remove(tag: any): void {
-    const index = this.tags.indexOf(tag);
+    const index = this.todo.tags.indexOf(tag);
     if (index >= 0) {
-      this.tags.splice(index, 1);
+      this.todo.tags.splice(index, 1);
     }
   }
 }
